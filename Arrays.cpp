@@ -162,6 +162,8 @@ class List
         int mid;
         int lower_bound = 0 ;
         int upper_bound = length - 1;
+        if (element < list[0] || element > list[length - 1])
+            return -1;
         while (lower_bound <= upper_bound)
         {
             count = count + 1;
@@ -174,6 +176,43 @@ class List
                 lower_bound = mid + 1;
         }
         return -1;
+    }
+    int interpolation_search(type element)
+    {
+        count = 0;
+        if (!Sort)
+        {
+            cout << "\nThe list is not sorted";
+            return -1;
+        }
+        int pos;
+        int lower_bound = 0;
+        int upper_bound = length - 1;
+        if (element < list[0] || element > list[length - 1])
+            return -1;
+        while (lower_bound <= upper_bound)
+        {
+            count = count + 1;
+            if (lower_bound == upper_bound)
+            {
+                if (list[lower_bound] == element)
+                    return lower_bound;
+                else
+                    return -1;
+            }
+            pos = lower_bound + ((double((upper_bound - lower_bound)) * (element - list[lower_bound])) / (list[upper_bound] - list[lower_bound]));
+            if (list[pos] == element)
+                return pos + 1;
+            else if (list[pos] < element)
+                lower_bound = pos + 1;
+            else 
+                upper_bound = pos - 1;
+        }
+        return -1;
+    } 
+    void fibonocci_search(void)
+    {
+        return;
     }
     void selection_sort(void)
     {
@@ -204,7 +243,7 @@ class List
         count = 0;
         if (!Sort)
         {
-            int temp;
+            type temp;
             Sort = true;
             for (int i = 0 ; i < length - 1 ; i++)
             {
@@ -221,6 +260,37 @@ class List
                 }
             }
         }
+    }
+    void insertion_sort(void)
+    {
+        count = 0;
+        if (!Sort)
+        {
+            Sort =true;
+            int k ;
+            type temp;
+            for (int i = 1 ; i < length ; i++)
+            {
+                count = count + 1;
+                temp = list[i];
+                k = i - 1;
+                while (k >= 0 && list[k] > temp)
+                {
+                    count = count + 1;
+                    list[k + 1] = list[k];
+                    k = k - 1;
+                }
+                list[k + 1] = temp;
+            }
+        }
+    }
+    void merge_sort(void)
+    {
+        return;
+    }
+    void merge(void)
+    {
+        return;
     }
     void print_max(void)
     {
@@ -281,7 +351,7 @@ int main()
             while (true)
             {
                 cout << "\nEnter the type of search";
-                cout << "\n1 :\tLinear Search\n2 :\tBinary Search\n3 :\tExit";
+                cout << "\n1 :\tLinear Search\n2 :\tBinary Search\n3 :\tInterpolation Search\n4 :\tExit";
                 cout << "\nEnter the action\t: ";
                 cin >> action;
                 cout << "Enter the element to be searched\t: ";
@@ -308,6 +378,16 @@ int main()
                 }
                 else if (action == 3)
                 {
+                    position = Array.interpolation_search(element);
+                    if (position == -1)
+                        cout << "\nThe entered element is not in the list or the list is not sorted";
+                    else
+                        cout << "\nThe element is in the position " << position;
+                    cout << "\nComparisons done\t: " << Array.get_count();
+                    break;
+                }
+                else if (action == 4)
+                {
                     break;
                 }
                 else 
@@ -319,7 +399,7 @@ int main()
             while (true)
             {
                 cout << "\nEnter the type of sort";
-                cout << "\n1 :\tSelection Sort\n2 :\tBubble Sort\n3 :\tExit";
+                cout << "\n1 :\tSelection Sort\n2 :\tBubble Sort\n3 :\tInsertion Sort\n4 :\tExit";
                 cout << "\nEnter the action\t: ";
                 cin >> action;
                 if (action == 1)
@@ -337,6 +417,13 @@ int main()
                     break;
                 }
                 else if (action == 3)
+                {
+                    Array.insertion_sort();
+                    Array.print();
+                    cout << "\nComparisons done\t: " << Array.get_count();
+                    break;
+                }
+                else if (action == 4)
                     break;
                 else 
                     cout << "\nInvalid action, Try again";
