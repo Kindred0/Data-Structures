@@ -210,9 +210,51 @@ class List
         }
         return -1;
     } 
-    void fibonocci_search(void)
+    int fibonocci_search(type element)
     {
-        return;
+        count = 0;
+        if (!Sort)
+        {
+            cout << "\nThe list is not sorted";
+            return -1;   
+        }
+        int fb1 = 0;
+        int fb2 = 1;
+        int fb3 = 1;
+        int offset = -1;
+        int i;
+        while (fb3 < list[length - 1])
+        {
+            count = count + 1;
+            fb2 = fb1;
+            fb1 = fb3;
+            fb3 = fb1 + fb2;
+        }
+        while (fb3 > 1)
+        {
+            count = count + 1;
+            i = offset + fb2;
+            if (list[i] < element)
+            {
+                fb3 = fb1;
+                fb1 = fb2;
+                fb2 = fb3 - fb1;
+                offset = i;
+            } 
+            else if (list[i] > element)
+            {
+                fb3 = fb2;
+                fb1 = fb1 - fb2;
+                fb2 = fb3 - fb1;
+            }
+            else 
+            {
+                return i + 1;
+            }
+        }
+        if (fb1 == 1 && list[offset + 1] == element)
+            return offset + 1;
+        return -1;
     }
     void selection_sort(void)
     {
@@ -284,9 +326,29 @@ class List
             }
         }
     }
+    void mergepass(int l)
+    {
+        int q = int(length / ( 2 * l));
+        int s = 2 * l * q;
+        int r = length - s;
+        for (int i = 1 ; i <= Q ; i++)
+        {
+            lb = 1 + (2i - 2) * l;
+            merge(l , lb);
+        }
+        if (r <= l)
+        {
+            
+        }
+    }
     void merge_sort(void)
     {
-        return;
+        int l = 1;
+        while (l < length)
+        {
+            mergepass(l);
+            l = 2 * l;
+        }
     }
     void merge(void)
     {
@@ -351,11 +413,14 @@ int main()
             while (true)
             {
                 cout << "\nEnter the type of search";
-                cout << "\n1 :\tLinear Search\n2 :\tBinary Search\n3 :\tInterpolation Search\n4 :\tExit";
+                cout << "\n1 :\tLinear Search\n2 :\tBinary Search\n3 :\tInterpolation Search\n4 :\tFibonocci Search\n5 :\tExit";
                 cout << "\nEnter the action\t: ";
                 cin >> action;
-                cout << "Enter the element to be searched\t: ";
-                cin >> element;
+                if (action < 6 && action > 0)
+                {
+                    cout << "Enter the element to be searched\t: ";
+                    cin >> element;
+                }
                 if (action == 1)
                 {
                     position = Array.linear_search(element);
@@ -387,6 +452,16 @@ int main()
                     break;
                 }
                 else if (action == 4)
+                {
+                    position = Array.fibonocci_search(element);
+                    if (position == -1)
+                        cout << "\nThe entered element is not in the list or the list is not sorted";
+                    else
+                        cout << "\nThe element is in the position " << position;
+                    cout << "\nComparisons done\t: " << Array.get_count();
+                    break;
+                }
+                else if (action == 5)
                 {
                     break;
                 }
