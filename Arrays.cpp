@@ -326,33 +326,70 @@ class List
             }
         }
     }
-    void mergepass(int l)
+    void merge(int beg, int mid, int end)
     {
-        int q = int(length / ( 2 * l));
-        int s = 2 * l * q;
-        int r = length - s;
-        for (int i = 1 ; i <= Q ; i++)
+        int i , j = 0, k = beg;
+        int n1 = mid - beg + 1;
+        int n2 = end - mid;
+        int leftlist[n1], rightlist[n2];
+        for (i = 0 ; i < n1 ; i++)
         {
-            lb = 1 + (2i - 2) * l;
-            merge(l , lb);
+            count = count + 1;
+            leftlist[i] = list[beg + i];
         }
-        if (r <= l)
+        for (i = 0 ; i < n2 ; i++)
         {
-            
+            count = count + 1;
+            rightlist[i] = list[mid + 1 + i];
+        }
+        i = 0;
+        while (i < n1)
+        {
+            count = count + 1;
+            if (leftlist[i] <= rightlist[j])
+            {
+                list[k] = leftlist[i];
+                i = i + 1;
+            }
+            else 
+            {
+                list[k] = rightlist[j];
+                j = j + 1;
+            }
+            k = k + 1;
+        }
+        while (i < n1)
+        {
+            count = count + 1;
+            list[k] = leftlist[i];
+            i = i + 1;
+            k = k + 1;
+        }
+        while (j < n2)
+        {
+            count = count + 1;
+            list[k] = rightlist[j];
+            j = j + 1;
+            k = k + 1;
+        }
+    }
+    void merge_sort(int beg , int end) 
+    {
+        int mid;
+        if (beg < end)
+        {
+            count = count + 1;
+            mid = (beg + end)/ 2;
+            merge_sort(beg, mid);
+            merge_sort(mid + 1, end);
+            merge(beg, mid ,end);
         }
     }
     void merge_sort(void)
     {
-        int l = 1;
-        while (l < length)
-        {
-            mergepass(l);
-            l = 2 * l;
-        }
-    }
-    void merge(void)
-    {
-        return;
+        count = 0;
+        merge_sort(0, length - 1);
+        Sort = true;
     }
     void print_max(void)
     {
@@ -474,7 +511,7 @@ int main()
             while (true)
             {
                 cout << "\nEnter the type of sort";
-                cout << "\n1 :\tSelection Sort\n2 :\tBubble Sort\n3 :\tInsertion Sort\n4 :\tExit";
+                cout << "\n1 :\tSelection Sort\n2 :\tBubble Sort\n3 :\tInsertion Sort\n4 :\tMerge Sort\n5 :\tExit";
                 cout << "\nEnter the action\t: ";
                 cin >> action;
                 if (action == 1)
@@ -499,6 +536,13 @@ int main()
                     break;
                 }
                 else if (action == 4)
+                {
+                    Array.merge_sort();
+                    Array.print();
+                    cout << "\nComparisons done\t: " << Array.get_count();
+                    break;
+                }
+                else if (action == 5)
                     break;
                 else 
                     cout << "\nInvalid action, Try again";
