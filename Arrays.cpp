@@ -177,6 +177,38 @@ class List
         }
         return -1;
     }
+    int ternary_search(type element)
+    {
+        count = 0;
+        if(!Sort)
+        {
+            cout << "\nThe list is not sorted";
+            return -1;
+        }
+        int mid1;
+        int mid2;
+        int beg = 0;
+        int end = length - 1;
+        while (beg <= end)
+        {
+            mid1 = ((end - beg) / 3) + beg;
+            mid2 = (2 * (end - beg) / 3) + beg;
+            if (list[mid1] == element)
+                return mid1;
+            if (list[mid2] == element)
+                return mid2;
+            if (element < list[mid1])
+                end = mid1 - 1;
+            if (element > list[mid2])
+                beg = mid2 + 1;
+            if (element < list[mid2] && element > list[mid1])
+            {
+                beg = mid1 + 1;
+                end = mid2 - 1;
+            }
+        }
+        return -1;
+    }
     int interpolation_search(type element)
     {
         count = 0;
@@ -388,8 +420,11 @@ class List
     void merge_sort(void)
     {
         count = 0;
-        merge_sort(0, length - 1);
-        Sort = true;
+        if (!Sort)
+        {
+            merge_sort(0, length - 1);
+            Sort = true;
+        }
     }
     void print_max(void)
     {
@@ -450,7 +485,7 @@ int main()
             while (true)
             {
                 cout << "\nEnter the type of search";
-                cout << "\n1 :\tLinear Search\n2 :\tBinary Search\n3 :\tInterpolation Search\n4 :\tFibonocci Search\n5 :\tExit";
+                cout << "\n1 :\tLinear Search\n2 :\tBinary Search\n3 :\tInterpolation Search\n4 :\tFibonocci Search\n5 :\tTernary Search\n6 :\tExit";
                 cout << "\nEnter the action\t: ";
                 cin >> action;
                 if (action < 6 && action > 0)
@@ -499,6 +534,16 @@ int main()
                     break;
                 }
                 else if (action == 5)
+                {
+                    position = Array.ternary_search(element);
+                    if (position == -1)
+                        cout << "\nThe entered element is not in the list or the list is not sorted";
+                    else
+                        cout << "\nThe element is in the position " << position;
+                    cout << "\nComparisons done\t: " << Array.get_count();
+                    break;
+                }
+                else if (action == 6)
                 {
                     break;
                 }

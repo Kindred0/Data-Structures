@@ -115,13 +115,13 @@ class sparce_matrix
             {
                 element[i][k] = A.element[i][k];
             }
-            element[0][0] = *A.row;
-            element[1][0] = *A.coloumn;
-            element[2][0] = *A.length;
-            row = &element[0][0];
-            coloumn = &element[1][0];
-            length = &element[2][0]; 
         }
+        element[0][0] = *A.row;
+        element[1][0] = *A.coloumn;
+        element[2][0] = *A.length;
+        row = &element[0][0];
+        coloumn = &element[1][0];
+        length = &element[2][0];
     }
     sparce_matrix(matrix A)
     {
@@ -211,14 +211,15 @@ class sparce_matrix
         A.display();
         return A;
     }
-    friend void add(sparce_matrix A, sparce_matrix B, sparce_matrix &C);
+    friend sparce_matrix add(sparce_matrix A, sparce_matrix B);
 };
-void add(sparce_matrix A, sparce_matrix B,sparce_matrix &C)
+sparce_matrix add(sparce_matrix A, sparce_matrix B)
 {
-    if (A.element[0][0] != B.element[0][0] && A.element[1][0] != B.element[1][0])
+    sparce_matrix C;
+    if (A.element[0][0] != B.element[0][0] || A.element[1][0] != B.element[1][0])
     {
         cout << "\nThe matrices cannot summed";
-        return ;
+        return C;
     }
     for (int i = 0 ; i < 3 ; i++)
         {
@@ -229,6 +230,7 @@ void add(sparce_matrix A, sparce_matrix B,sparce_matrix &C)
     {
         C.element[i] = new int[C.max_length];
     }
+    cout << "\nSuccessfully Entered the funtion";
     C.row = &C.element[0][0];
     C.coloumn = &C.element[1][0];
     C.length = &C.element[2][0];
@@ -299,24 +301,28 @@ void add(sparce_matrix A, sparce_matrix B,sparce_matrix &C)
             k++;
             i++;
         }
+        C.display();
     }
-    
+    return C;
 }
 int main()
 {
+    sparce_matrix SC;
     int r, c;
-    cout << "\nEnter the rows and coloumns of the matrix\t: ";
+    cout <<"\nEnter the roes and coloumns of the first matrix\t: ";
     cin >> r >> c;
     matrix A(r, c);
-    cout << "\nThe matrix\t: \n";
-    A.display();
-    sparce_matrix B(A);
-    cout << "\nThe sparce matrix\t: \n";
-    B.display();
-    cout << "\nThe transposed sparce matrix\t: \n";
-    sparce_matrix C;
-    C = B.transpose();
-    cout << "\nTry again\n";
-    C.display();
+    cout << "\nEnter the rows and coloumns of the second matrix\t: ";
+    cin >> r >> c;
+    matrix B(r,c);
+    sparce_matrix SA(A);
+    sparce_matrix SB(B);
+    cout << "\nThe first sparce matrix\t: \n";
+    SA.display();
+    cout << "\nThe second sparce matrix\t: \n";
+    SB.display();
+    SC = add(SA, SB);
+    cout << "\nA + B = ";
+    SC.display();
     return 0;
 }
