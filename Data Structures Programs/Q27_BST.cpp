@@ -34,6 +34,7 @@ class BST
             destroy(head->right);
         cout << "\n Node destroyed with info " << head->info;
         delete this;
+        return;
     }
     void destroy(void)
     {
@@ -135,41 +136,34 @@ class BST
                     else 
                         head->right == NULL;
                     destroy(child);
+                    return;
                 }
-                else if (child->left == NULL)
+                else if (child->left == NULL && child->right != NULL)
                 {
-                    if (head->left == child)
-                        head->left = child->right;
-                    else 
-                        head->right = child->right;
-                    child->right = NULL;
-                    destroy(child);
+                    child->info = child->right->info;
+                    destroy(child->right);
+                    return;
                 }
-                else if (child->right == NULL)
+                else if (child->right == NULL && child->left != NULL)
                 {
-                    if (head->left == child)
-                        head->left = child->left;
-                    else 
-                        head->right = child->left;
-                    child->left = NULL;
-                    destroy(child);
+                    child->info = child->left->info;
+                    destroy(child->left);
+                    return;
                 }
                 else 
                 {
                     temp = child->left;
                     while(true)
                     {
-                        if (temp->left == NULL && temp->right == NULL)
-                            break;
                         if (temp->right != NULL)
                             temp = temp->right;
-                        else if (temp->left != NULL)
-                            temp = temp->left;
+                        else 
+                            break;
                     }
-                    if (head->left == child)
-                        head->left = temp;
-                    else 
-                        head->right = temp;
+                    int data = temp->info;
+                    remove(temp->info);
+                    child->info = data;
+                    return;
                 }
             }
         }
@@ -242,8 +236,9 @@ int main()
         }
         else if (action == 2)
         {
-            cout << "\nStill not coded thank you :)";
-            break;
+            cout << "\nEnter the number to be removed";
+            cin >> n;
+            tree.remove(n);
         }
         else if (action == 3)
         {
