@@ -1,0 +1,85 @@
+
+declare 
+fact number := 1;   
+n number;   
+begin   
+n := &a_number;        
+while n > 0 loop  
+fact := n * fact ;        
+n := n - 1;           
+end loop;         
+dbms_output.put_line(fact);  
+end;         
+/
+
+Enter value for a_number: 6
+old   5: n := &a_number;
+new   5: n := 6;
+720
+
+
+
+// 1b max of two numbers
+
+declare
+    a number;
+    b number;
+begin
+    a := &a_number;
+    b := &another_number;
+
+if a < b then
+    dbms_output.put_line(b||' is larger ');
+else 
+    dbms_output.put_line(a||' is larger ');
+end if ;
+end;
+/
+
+Enter value for a: 54
+old   5:     a := &a number;
+new   5:     a := 54 number;
+Enter value for another: 6
+old   6:     b := &another number;
+new   6:     b := 6 number;
+    a := 54 number;
+
+// 1c
+
+declare
+n number;            
+i number;           
+temp number;       
+begin
+n := &a_number;                
+i := 2;
+temp := 1;
+for i in 2..n/2
+loop
+if mod(n, i) = 0 then
+temp := 0;
+exit;
+end if;
+end loop;
+if temp = 1 then
+dbms_output.put_line('The number is prime');
+else
+dbms_output.put_line('The number is not prime');
+end if;
+end;         
+/
+
+// 1d
+
+declare 
+i number;
+begin 
+for i in 1..10 
+loop
+dbms_output.put_line(''||i||'');
+end loop;
+end;
+/
+
+// 2a
+
